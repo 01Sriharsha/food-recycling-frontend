@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+
+:root {
+  --primary-color: #ECF2FF !important;
+  --secondary-color: #3E54AC !important;
+  --action-color: #655DBB !important;
+  --helper-color: #BFACE2 !important;
+}
+
+body {
+  /* font-family: 'Inter', sans-serif !important; */
+  width: 100% !important;
+  background: url('./assets/bg-dash.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: cover;
+  position: relative;
+  min-height: 100vh;
+}
+
+.bg-color-p {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-color-s {
+  background-color: var(--secondary-color) !important;
+  color: white !important;
+}
+
+.color {
+  background-color: red !important;
+}
+
+.header a {
+  padding: 0.3rem !important;
+  /* margin: 0rem 0.5rem !important; */
+  color: white !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.header a:hover {
+  padding: 0.3rem !important;
+  /* margin: 0rem 0.5rem !important; */
+  background-color: white !important;
+  color: blue !important;
+  border-radius: 6px !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.btn-p {
+  background-color: var(--action-color) !important;
+  color: white !important;
+  border: 0 !important;
+}
+
+.login-page {
+  height: 90vh;
+  /* border: 1px solid black; */
+}
+
+.bg-image {
+  background: url('./assets/login.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: cover;
+  position: relative;
+  height: 90vh;
+}
+
+.admin-dashboard {
+  width: 100% !important;
+  background: url('./assets/bg-image1.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: cover;
+  position: relative;
+  height: 90vh;
+}
+.bg-register {
+  width: 100% !important;
+  background: url('./assets/bg-image1.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: cover;
+  position: relative;
+  height:  100% !important;
+}
+
+.admin-actions th a {
+  transition: all 0.2s ease-in-out !important;
+  padding: 0.4rem !important;
+}
+
+.admin-actions th a:hover {
+  background-color: orange !important;
+  padding: 0.4rem !important;
+  color: white !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.request-food-bg {
+  width: 100% !important;
+  background: url('./assets/STOP-FOOD-WASTE.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 100vh !important;
+}
+.about {
+  width: 100% !important;
+  background: url('./assets/donate2.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 90vh !important;
+}
+.contact {
+  width: 100% !important;
+  background: url('./assets/food-bg5.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 90vh !important;
+}
+.faq-bg {
+  /* width: 100% !important; */
+  background: url('./assets/faq.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 100% !important;
+}
+
+.shoutout {
+  /* width: 100% !important; */
+  background: url('./assets/food-bg3.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 90vh !important;
+}
+
+.tracking-in-expand {
+  -webkit-animation: tracking-in-expand 3s cubic-bezier(.215, .61, .355, 1.000) both;
+  animation: tracking-in-expand 3s cubic-bezier(.215, .61, .355, 1.000) both
+}
+
+
+@-webkit-keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -.5em;
+    opacity: 0
+  }
+
+  40% {
+    opacity: .6
+  }
+
+  100% {
+    opacity: 1
+  }
+}
+
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -.5em;
+    opacity: 0
+  }
+
+  40% {
+    opacity: .6
+  }
+
+  100% {
+    opacity: 1
+  }
+}
