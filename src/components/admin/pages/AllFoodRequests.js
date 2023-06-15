@@ -69,6 +69,17 @@ export default function AllFoodRequests() {
       });
   };
 
+  function getTime(dateVal) {
+    // console.log(dateVal);
+    const date = new Date(dateVal);
+    date.setHours(date.getHours() + 6, 0, 0, 0, 0);
+    const currentDate = new Date();
+    if (date <= currentDate) {
+      return "Time Over";
+    }
+    return;
+  }
+
   if (requestedFoods.length === 0) {
     return (
       <div
@@ -147,55 +158,62 @@ export default function AllFoodRequests() {
                 {request.status}
               </td>
 
-              <td>
-                {user === "admin" && (
-                  <div className="d-flex justify-content-center gap-3">
-                    {request.status === "approved" && (
-                      <Button
-                        as={!request.ngo && Link}
-                        to={`/admin/request/${request.id}/assign-ngo`}
-                        variant={!request.ngo && "primary"}
-                        className="btn-sm text-capitalize"
-                        onClick={() =>
-                          toast.info(
-                            `Donation assigned to ${request.ngo.name?.toUpperCase()} 
+              {getTime(request.dateTime) === "Time Over" &&
+              request.status === "pending" ? (
+                <td>Time Over</td>
+              ) : (
+                <td>
+                  {user === "admin" && (
+                    <div className="d-flex justify-content-center gap-3">
+                      {request.status === "approved" && (
+                        <Button
+                          as={!request.ngo && Link}
+                          to={`/admin/request/${request.id}/assign-ngo`}
+                          variant={!request.ngo && "primary"}
+                          className="btn-sm text-capitalize"
+                          onClick={() =>
+                            toast.info(
+                              `Donation assigned to ${request.ngo.name?.toUpperCase()} 
                                   for delivery`,
-                            TOAST_PROP
-                          )
-                        }
-                      >
-                        {request.ngo ? request.ngo.name : "Assign"}
-                      </Button>
-                    )}
-                    {request.status === "pending" && (
-                      <>
-                        <Button
-                          variant="primary"
-                          className="btn-sm"
-                          // disabled={request.status !== "pending"}
-                          //Todo: Pass the whole existing request obj while updating status
-                          onClick={() => {
-                            updateStatus("approved", request);
-                          }}
+                              TOAST_PROP
+                            )
+                          }
                         >
-                          Accept
+                          {request.ngo ? request.ngo.name : "Assign"}
                         </Button>
-                        <Button
-                          variant="secondary"
-                          className="btn-sm"
-                          // disabled={request.status !== "pending"}
-                          onClick={() => {
-                            updateStatus("rejected", request);
-                          }}
-                        >
-                          Reject
-                        </Button>
-                      </>
-                    )}
-                    {(request.status === "rejected" || request.status === "assigned") && "-"}
-                  </div>
-                )}
-              </td>
+                      )}
+                      {request.status === "pending" && (
+                        <>
+                          <Button
+                            variant="primary"
+                            className="btn-sm"
+                            // disabled={request.status !== "pending"}
+                            //Todo: Pass the whole existing request obj while updating status
+                            onClick={() => {
+                              updateStatus("approved", request);
+                            }}
+                          >
+                            Accept
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            className="btn-sm"
+                            // disabled={request.status !== "pending"}
+                            onClick={() => {
+                              updateStatus("rejected", request);
+                            }}
+                          >
+                            Reject
+                          </Button>
+                        </>
+                      )}
+                      {(request.status === "rejected" ||
+                        request.status === "assigned") &&
+                        "-"}
+                    </div>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

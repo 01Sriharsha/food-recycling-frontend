@@ -6,7 +6,6 @@ export default function NgoDashboard() {
   const { pathname } = useLocation();
 
   const Quick_Links = [
-    { label: "Shoutout", link: "/ngo/shoutout" },
     { label: "View All Donations", link: "/ngo/all-donations" },
     { label: "View Requested Food", link: "/ngo/all-requests" },
     { label: "All Shoutout's", link: "/ngo/all-shoutouts" },

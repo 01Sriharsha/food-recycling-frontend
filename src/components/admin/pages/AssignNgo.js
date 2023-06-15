@@ -14,16 +14,39 @@ const AssignNgo = () => {
 
   const navigate = useNavigate();
 
-  const [requestFood, setRequestFood] = useState("");
+  const [requestFood, setRequestFood] = useState({});
   const [ngos, setNgos] = useState([]);
+  const [items, setItems] = useState([]);
   const [item, setItem] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [items, setItems] = useState([]);
 
   // State to store the selected NGO and delivery details
   const [selectedNGO, setSelectedNGO] = useState("");
-  const [deliveryDate, setDeliveryDate] = useState("");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState({
+    date: "",
+    month: "",
+    year: "",
+  });
+  const [deliveryAddress, setDeliveryAddress] = useState(
+    requestFood.address || ""
+  );
+
+  const [currentMonth] = useState(new Date().getMonth());
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   useEffect(() => {
     getSingleRequestedFood(id)
@@ -37,15 +60,34 @@ const AssignNgo = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  const validate = () => {
+    if (
+      item.length === 0 ||
+      quantity.length === 0 ||
+      deliveryAddress.length === 0 ||
+      deliveryDate.date.length === 0 ||
+      deliveryDate.month.length === 0 ||
+      deliveryDate.year.length === 0 ||
+      selectedNGO.length === 0
+    ) {
+      toast.error("Fields cannot be empty!!", TOAST_PROP);
+      return false;
+    }
+    return true;
+  };
+
   const handleAssignNgo = (e) => {
     e.preventDefault();
+    if (!validate()) return;
     toast
       .promise(
         createAssignment(
           {
-            deliveryDate,
+            deliveryDate: `${deliveryDate.date}-${deliveryDate.month}-${deliveryDate.year}`,
             foodItems: JSON.stringify(items),
-            deliveryAddress: `${deliveryAddress}, ${requestFood.city}`,
+            deliveryAddress: `${deliveryAddress || requestFood.address}, ${
+              requestFood.city
+            }`,
           },
           selectedNGO,
           id
@@ -67,6 +109,16 @@ const AssignNgo = () => {
         );
       });
   };
+
+  function generateDate() {
+    const dateArray = [];
+
+    for (let i = 0; i < 20; i++) {
+      const date = new Date();
+      dateArray.push(date.getDate() + i);
+    }
+    return dateArray;
+  }
 
   return (
     <Container className="p-4">
@@ -149,11 +201,60 @@ const AssignNgo = () => {
 
             <Form.Group className="my-3">
               <Form.Label>Delivery Date:</Form.Label>
-              <Form.Control
-                type="date"
-                value={deliveryDate}
-                onChange={(e) => setDeliveryDate(e.target.value)}
-              />
+              <div className="d-flex gap-3">
+                <Form.Control
+                  as="select"
+                  className="text-center text-capitalize"
+                  value={deliveryDate.date}
+                  onChange={(e) =>
+                    setDeliveryDate({ ...deliveryDate, date: e.target.value })
+                  }
+                >
+                  <option hidden>--select date--</option>
+                  {generateDate()
+                    .filter((date) => date <= 31)
+                    .map((date) => (
+                      <option key={date} value={date}>
+                        {date}
+                      </option>
+                    ))}
+                </Form.Control>
+                <Form.Control
+                  as="select"
+                  value={deliveryDate.month}
+                  className="text-center text-capitalize"
+                  onChange={(e) =>
+                    setDeliveryDate({ ...deliveryDate, month: e.target.value })
+                  }
+                >
+                  <option hidden>--select month--</option>
+                  {monthNames.map((month, i) => (
+                    <option
+                      key={month}
+                      value={i + 1}
+                      disabled={i < currentMonth}
+                    >
+                      {month}
+                    </option>
+                  ))}
+                </Form.Control>
+
+                <Form.Control
+                  as="select"
+                  className="text-center text-capitalize"
+                  value={deliveryDate.year}
+                  onChange={(e) =>
+                    setDeliveryDate({ ...deliveryDate, year: e.target.value })
+                  }
+                >
+                  <option hidden>--select year--</option>
+                  {Array.from({ length: 5 }).map((e, i) => (
+                    <option key={i} value={new Date().getFullYear() + i}>
+                      {new Date().getFullYear() + i}
+                    </option>
+                  ))}
+                </Form.Control>
+              </div>
             </Form.Group>
 
             <Form.Group className="my-3">

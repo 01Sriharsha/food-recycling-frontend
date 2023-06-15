@@ -50,6 +50,10 @@ export default function Register() {
       toast.error("Fields cannot be empty!!", TOAST_PROP);
       return false;
     }
+    if (inputVal.phone.length >= 0) {
+      toast.error("Enter valid phone number!!", TOAST_PROP);
+      return false;
+    }
     return true;
   }
 

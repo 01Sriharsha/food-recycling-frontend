@@ -39,6 +39,7 @@ export default function AddCity() {
       setError("*City name must be alpahbetical characters only!!");
       return;
     }
+    setError("");
     setCity(e.target.value);
   };
 
@@ -60,7 +61,10 @@ export default function AddCity() {
       })
       .catch((err) => {
         console.log(err);
-        toast.error("Failed to add city!!", TOAST_PROP);
+        toast.error(
+          err.response.data ? err.response.data : "Failed to add city!!",
+          TOAST_PROP
+        );
       });
     setCity("");
   }

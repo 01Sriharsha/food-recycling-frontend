@@ -68,10 +68,12 @@ export default function AddArea() {
       .then((res) => {
         console.log(res);
         loadAllAreas();
-      })
-      .catch((err) => {
+      }).catch((err) => {
         console.log(err);
-        toast.error("Failed to add city!!", TOAST_PROP);
+        toast.error(
+          err.response.data ? err.response.data : "Failed to add area!!",
+          TOAST_PROP
+        );
       });
     setInput({ cityId: "", area: "" });
   }

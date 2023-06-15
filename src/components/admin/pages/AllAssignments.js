@@ -24,6 +24,7 @@ const AllAssignments = () => {
 
   const toggle = () => setShow(!show);
 
+  
   const loadAssignments = () => {
     const promise =
       user === "admin" ? getAllAssignments() : getAllAssignmentsByNgo(user.id);
