@@ -26,7 +26,6 @@ export default function AddArea() {
 
   const [cities, setCities] = useState([]);
   const [areas, setAreas] = useState([]);
-  const [error, setError] = useState("");
 
   const loadAllCities = () =>
     getAllCities()
@@ -44,17 +43,26 @@ export default function AddArea() {
   }, []);
 
   function handleChange(e) {
-    if (e.target.value.match(/[0-9]/)) {
-      setError("*Area name must be alpahbetical characters only!!");
-      return;
-    }
     setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   }
 
+  function validate(){
+    if (input.area.match(/[0-9]/)) {
+      toast.error("*Area name must be alpahbetical characters only!!" , TOAST_PROP);
+      return false;
+    }
+    if(input.cityId.length===0 || input.area.length===0){
+      toast.error("Fileds cannot be empty!!" , TOAST_PROP);
+      return false;
+    }
+    return true;
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
+    if(!validate()) return;
     const areaData = { name: input.area };
     toast
       .promise(
@@ -129,7 +137,6 @@ export default function AddArea() {
               value={input.area}
               onChange={handleChange}
             />
-            <small className="my-4 text-danger">{error}</small>
             <div className="d-flex justify-content-end w-100">
               <Button variant="secondary" className="my-3" type="submit">
                 Add

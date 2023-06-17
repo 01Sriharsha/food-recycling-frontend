@@ -16,8 +16,6 @@ export default function ShoutoutPage() {
 
   const [foodTypes, setFoodTypes] = useState([]);
 
-  const [error, setError] = useState("");
-
   useEffect(() => {
     getAllFoodType()
       .then((res) => setFoodTypes(res.data))
@@ -25,11 +23,6 @@ export default function ShoutoutPage() {
   }, []);
 
   const handleChange = (e) => {
-    if (e.target.value.match(/[0-9]/)) {
-      setError("*Food item must be alpahbetical characters only!!");
-      return;
-    }
-    setError("");
     setInputVal((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
@@ -42,6 +35,10 @@ export default function ShoutoutPage() {
       inputVal.quantity.length === 0
     ) {
       toast.error("Fields cannot be empty!!", TOAST_PROP);
+      return false;
+    }
+    if (inputVal.foodItem.match(/[0-9]/)) {
+      toast.error("Food item must be alpahbetical characters only!!" , TOAST_PROP);
       return false;
     }
     return true;
@@ -104,7 +101,6 @@ export default function ShoutoutPage() {
               value={inputVal.foodItem}
               onChange={handleChange}
             />
-            <small className="text-danger">{error}</small>
           </Form.Group>
 
           <Form.Group className="my-3">
