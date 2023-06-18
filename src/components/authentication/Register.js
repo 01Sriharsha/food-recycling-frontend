@@ -6,6 +6,7 @@ import { getAllCities } from "../../api/adminService";
 import { createDonor } from "../../api/DonorService";
 import { createMember } from "../../api/MemberService";
 import { TOAST_PROP } from "../../App";
+import { createNgo } from "../../api/ngoService";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -44,12 +45,12 @@ export default function Register() {
       inputVal.address.length === 0 ||
       inputVal.city.length === 0 ||
       inputVal.password.length === 0 ||
-      inputVal.phone === 0
+      inputVal.phone.length === 0
     ) {
       toast.error("Fields cannot be empty!!", TOAST_PROP);
       return false;
     }
-    if (Number.parseInt(inputVal.phone) !== 10) {
+    if (inputVal.phone.length !== 10) {
       toast.error("Enter valid phone number!!", TOAST_PROP);
       return false;
     }
@@ -72,7 +73,7 @@ export default function Register() {
     const userPromise = () => {
       if (inputVal.user === "donor") return createDonor(userData);
       if (inputVal.user === "member") return createMember(userData);
-      if (inputVal.user === "ngo") return createMember(userData);
+      if (inputVal.user === "ngo") return createNgo(userData);
     };
 
     toast
