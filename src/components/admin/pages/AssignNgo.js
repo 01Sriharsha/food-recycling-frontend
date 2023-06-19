@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { createAssignment, getAllNgos } from "../../../api/ngoService";
@@ -14,6 +14,8 @@ const AssignNgo = () => {
 
   const navigate = useNavigate();
 
+  const ref = useRef();
+
   const [requestFood, setRequestFood] = useState({});
   const [ngos, setNgos] = useState([]);
   const [items, setItems] = useState([]);
@@ -27,9 +29,7 @@ const AssignNgo = () => {
     month: "",
     year: "",
   });
-  const [deliveryAddress, setDeliveryAddress] = useState(
-    requestFood.address || ""
-  );
+  const [deliveryAddress, setDeliveryAddress] = useState("");
 
   const [currentMonth] = useState(new Date().getMonth());
 
@@ -61,10 +61,13 @@ const AssignNgo = () => {
   }, []);
 
   const validate = () => {
+    console.log(deliveryAddress.length);
+    console.log(deliveryDate.date.length);
+    console.log(deliveryDate.month.length);
+    console.log(deliveryDate.year.length);
+    console.log(selectedNGO.length);
     if (
-      item.length === 0 ||
-      quantity.length === 0 ||
-      deliveryAddress.length === 0 ||
+      ref.current?.value.length === 0 ||
       deliveryDate.date.length === 0 ||
       deliveryDate.month.length === 0 ||
       deliveryDate.year.length === 0 ||
@@ -75,6 +78,8 @@ const AssignNgo = () => {
     }
     return true;
   };
+
+  console.log(ref.current?.value);
 
   const handleAssignNgo = (e) => {
     e.preventDefault();
@@ -260,6 +265,7 @@ const AssignNgo = () => {
             <Form.Group className="my-3">
               <Form.Label>Delivery Address:</Form.Label>
               <Form.Control
+                ref={ref}
                 type="text"
                 value={deliveryAddress || requestFood.address}
                 onChange={(e) => setDeliveryAddress(e.target.value)}

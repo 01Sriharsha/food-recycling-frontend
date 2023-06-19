@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Badge, Button, Card, Col, Row } from "react-bootstrap";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { verifyNgo } from "../../api/ngoService";
+import { deleteNgo, verifyNgo } from "../../api/ngoService";
 import { TOAST_PROP } from "../../App";
+import { deleteDonor } from "../../api/DonorService";
+import { deleteMember } from "../../api/MemberService";
 
-export default function UserCard({ user }) {
+export default function UserCard({ user  , setRefresh}) {
   const [status, setStatus] = useState(user.status || "");
 
   const handleVerification = () => {
@@ -23,6 +25,23 @@ export default function UserCard({ user }) {
         console.log(err);
         toast.error("Verification failed!!", TOAST_PROP);
       });
+  };
+
+  const handleDelete = () => {
+    const promise =
+      (user.user === "donor" && deleteDonor(user.id)) ||
+      (user.user === "member" && deleteMember(user.id)) ||
+      (user.user === "ngo" && deleteNgo(user.id));
+    toast
+      .promise(
+        promise,
+        { pending: "Deleting...", success: "User removed successfully!!" },
+        TOAST_PROP
+      )
+      .then((res) => {
+        setRefresh(true);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -105,6 +124,7 @@ export default function UserCard({ user }) {
         <Button
           variant="secondary"
           className="btn-sm d-flex align-items-center gap-1"
+          onClick={handleDelete}
         >
           <span>Delete</span>
           <AiFillDelete />

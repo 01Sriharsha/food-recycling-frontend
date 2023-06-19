@@ -24,7 +24,6 @@ const AllAssignments = () => {
 
   const toggle = () => setShow(!show);
 
-  
   const loadAssignments = () => {
     const promise =
       user === "admin" ? getAllAssignments() : getAllAssignmentsByNgo(user.id);
@@ -88,9 +87,18 @@ const AllAssignments = () => {
   };
 
   const removeAssignment = (assignment) => {
+    console.log(assignment.id);
     toast
-      .promise(deleteAssignment(assignment.id))
-      .then((res) => loadAssignments())
+      .promise(
+        deleteAssignment(assignment.id),
+        { pending: "Removing....", success: "Removed successfully!!" },
+        TOAST_PROP
+      )
+      .then((res) =>
+        setAssignments(
+          assignments.filter((assign) => assign.id !== assignment.id)
+        )
+      )
       .catch((err) => console.log(err));
   };
 

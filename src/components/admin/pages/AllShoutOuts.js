@@ -58,7 +58,7 @@ export default function AllShoutOuts() {
         className="d-flex justify-content-center align-items-center"
         style={{ minHeight: "70vh" }}
       >
-        {context.user === "admin" || context.user.user === "ngo" ? (
+        {context.user === "admin" ? (
           <div className="d-flex justify-content-center align-items-center gap-2">
             <h5>
               No Shout outs &nbsp;
@@ -66,7 +66,7 @@ export default function AllShoutOuts() {
             </h5>
           </div>
         ) : (
-          <h4>No Shoutouts to respond...!</h4>
+          <h4>No Shoutouts...!</h4>
         )}
       </div>
     );
@@ -100,7 +100,7 @@ export default function AllShoutOuts() {
                 {shoutout.quantity}{" "}
                 {shoutout.foodType === "Diary" ? "ltr" : "Kg"}
               </td>
-              {(context.user === "admin"  || context.user.user === "ngo")&& (
+              {(context.user === "admin" || context.user.user === "ngo") && (
                 <td>
                   {shoutout.donor?.name ? (
                     <Button
@@ -122,10 +122,11 @@ export default function AllShoutOuts() {
                 </td>
               )}
               <td>
-                {(context.user === "admin" || context.user.user === "ngo") ? (
+                {context.user === "admin" || context.user.user === "ngo" ? (
                   <Button
                     variant="secondary"
                     className="btn-sm"
+                    disbale={context.user.user === "ngo"}
                     onClick={() => handleDelete(shoutout.id)}
                   >
                     Delete

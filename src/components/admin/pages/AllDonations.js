@@ -56,16 +56,6 @@ export default function AllDonations() {
     else loadAllDonationsByDonor();
   }, [user]);
 
-  function checkDate(dateVal) {
-    const date = new Date(dateVal);
-    const currentDate = new Date();
-    if (date !== currentDate) {
-      console.log("expired");
-      return "Expired";
-    }
-    return;
-  }
-
   const updateStatus = (status, donationObj) => {
     const donationData = { ...donationObj, status: status };
     toast
@@ -189,10 +179,7 @@ export default function AllDonations() {
                                 }
                                 `}
                 >
-                  {checkDate(donation.expirationDate) === "Expired" &&
-                  donation.status === "pending"
-                    ? "-"
-                    : donation.status}
+                  {donation.status}
                 </td>
                 {(user === "admin" || user.user === "ngo") && (
                   <>
@@ -214,9 +201,7 @@ export default function AllDonations() {
                       )}
                     </td>
                     <td>
-                      {user === "admin" &&
-                      checkDate(donation.expirationDate) === "Expired" &&
-                      donation.status !== "pending" ? (
+                      {user === "admin"  ? (
                         <div className="d-flex justify-content-center gap-2">
                           <Button
                             variant="primary"

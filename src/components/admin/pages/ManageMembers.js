@@ -8,9 +8,12 @@ import UserCard from '../../util/UserCard'
 export default function ManageMembers() {
     const [members, setMembers] = useState([])
 
+    const [refresh, setRefresh] = useState(false);
+
     useEffect(() => {
+        setRefresh(false);
         getAllMembers().then(res => setMembers(res.data)).catch(err => console.log(err))
-    }, [])
+    }, [refresh])
     return (
         <Container>
             {(members.length !== 0)
@@ -20,7 +23,7 @@ export default function ManageMembers() {
                         <Row md={2} className="m-0">
                             {members.map(member => (
                                 <Col key={member.id} className="">
-                                    <UserCard user={member} />
+                                    <UserCard user={member} setRefresh={setRefresh} />
                                 </Col>
                             ))}
                         </Row>

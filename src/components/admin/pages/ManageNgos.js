@@ -6,11 +6,14 @@ import UserCard from "../../util/UserCard";
 export default function ManageNgos() {
   const [ngos, setNgos] = useState([]);
 
+  const [refresh, setRefresh] = useState(false);
+
   useEffect(() => {
+    setRefresh(false);
     getAllNgos()
       .then((res) => setNgos(res.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [refresh]);
 
   return (
     <Container>
@@ -22,7 +25,7 @@ export default function ManageNgos() {
           <Row md={2} className="m-0 w-100">
             {ngos.map((ngo) => (
               <Col key={ngo.id} className="">
-                <UserCard user={ngo} />
+                <UserCard user={ngo} setRefresh={setRefresh} />
               </Col>
             ))}
           </Row>
