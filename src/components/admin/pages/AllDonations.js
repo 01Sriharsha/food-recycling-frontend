@@ -201,7 +201,7 @@ export default function AllDonations() {
                       )}
                     </td>
                     <td>
-                      {user === "admin"  ? (
+                      {user === "admin"  && (
                         <div className="d-flex justify-content-center gap-2">
                           <Button
                             variant="primary"
@@ -220,8 +220,6 @@ export default function AllDonations() {
                             Reject
                           </Button>
                         </div>
-                      ) : (
-                        <span className="text-muted fw-bold">Expired</span>
                       )}
                     </td>
                   </>

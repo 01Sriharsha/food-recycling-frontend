@@ -206,7 +206,7 @@ const AllAssignments = () => {
                     )}
                   </td>
                   <td>
-                    {assignment.acceptance === "pending" &&
+                    {(assignment.acceptance === "pending" || assignment.acceptance === "rejected" ) &&
                     !assignment.delivered ? (
                       "-"
                     ) : assignment.delivered ? (

@@ -19,8 +19,11 @@ export const deleteNgo = (NgoId) => apiClient.delete(`/ngos/${NgoId}`);
 export const verifyNgo = (NgoId) => apiClient.put(`/ngos/${NgoId}/verify`);
 
 //Assignment Api's
-export const createAssignment = (assignmentData, NgoId, requestId) =>
-  apiClient.post(`/request/${requestId}/ngos/${NgoId}/assignments` , assignmentData);
+export const createAssignment = (assignmentData, NgoId, requestId, donorId) =>
+  apiClient.post(
+    `/request/${requestId}/ngos/${NgoId}/donor/${donorId}/assignments`,
+    assignmentData
+  );
 
 export const getAllAssignments = () => apiClient.get(`/assignments`);
 

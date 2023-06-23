@@ -1,11 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Dropdown,
+  Table,
+} from "react-bootstrap";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { createAssignment, getAllNgos } from "../../../api/ngoService";
 import { getSingleRequestedFood } from "../../../api/MemberService";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineArrowRight } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../../App";
+import { getAllDonors } from "../../../api/DonorService";
 
 const AssignNgo = () => {
   const param = useParams();
@@ -18,12 +28,14 @@ const AssignNgo = () => {
 
   const [requestFood, setRequestFood] = useState({});
   const [ngos, setNgos] = useState([]);
+  const [donors, setDonors] = useState([]);
   const [items, setItems] = useState([]);
   const [item, setItem] = useState("");
   const [quantity, setQuantity] = useState("");
 
   // State to store the selected NGO and delivery details
   const [selectedNGO, setSelectedNGO] = useState("");
+  const [selectedDonor, setSelectedDonor] = useState({});
   const [deliveryDate, setDeliveryDate] = useState({
     date: "",
     month: "",
@@ -32,6 +44,8 @@ const AssignNgo = () => {
   const [deliveryAddress, setDeliveryAddress] = useState("");
 
   const [currentMonth] = useState(new Date().getMonth());
+
+  const [show, setShow] = useState(false);
 
   const monthNames = [
     "January",
@@ -60,6 +74,12 @@ const AssignNgo = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(() => {
+    getAllDonors()
+      .then((res) => setDonors(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   const validate = () => {
     console.log(deliveryAddress.length);
     console.log(deliveryDate.date.length);
@@ -79,8 +99,6 @@ const AssignNgo = () => {
     return true;
   };
 
-  console.log(ref.current?.value);
-
   const handleAssignNgo = (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -95,7 +113,8 @@ const AssignNgo = () => {
             }`,
           },
           selectedNGO,
-          id
+          id,
+          selectedDonor.id
         ),
         {
           pending: "Assigning...",
@@ -105,7 +124,7 @@ const AssignNgo = () => {
       )
       .then((res) => {
         console.log(res.data);
-        // navigate("/admin/all-assignments");
+        navigate("/admin/all-assignments");
       })
       .catch((err) => {
         console.log(err);
@@ -260,6 +279,48 @@ const AssignNgo = () => {
                   ))}
                 </Form.Control>
               </div>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Select Donor : </Form.Label>
+              <div className="d-flex align-items-center gap-4">
+                <Button variant="info" onClick={() => setShow(!show)}>
+                  Select Donor
+                </Button>
+                <span className="text-capitalize fw-bolder text-success">
+                  <AiOutlineArrowRight /> {/* For Arrow Mark */}
+                  {selectedDonor?.name || ""}
+                </span>
+              </div>
+              {show && (
+                <Table responsive hover>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Address</th>
+                      <th>City</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {donors.map((donor) => (
+                      <tr
+                        key={donor.id}
+                        role="button"
+                        onClick={() => {
+                          setSelectedDonor(donor);
+                          setShow(!show);
+                        }}
+                      >
+                        <td>{donor.name}</td>
+                        <td>{donor.phone}</td>
+                        <td>{donor.address}</td>
+                        <td>{donor.city}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
             </Form.Group>
 
             <Form.Group className="my-3">
