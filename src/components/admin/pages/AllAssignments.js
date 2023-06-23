@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { TOAST_PROP } from "../../../App";
 import { BsFillBasketFill } from "react-icons/bs";
 import ViewFoodItems from "../../donor/util/ViewFoodItems";
+import ViewDonorDetails from "../layout/ViewDonorDetails";
 
 const AllAssignments = () => {
   const user = CustomContext()?.user;
@@ -23,6 +24,10 @@ const AllAssignments = () => {
   const [show, setShow] = useState(false);
 
   const toggle = () => setShow(!show);
+
+  const [showDonor, setShowDonor] = useState(false);
+
+  const toggleDonorDetails = () => setShowDonor(!showDonor);
 
   const loadAssignments = () => {
     const promise =
@@ -123,6 +128,7 @@ const AllAssignments = () => {
                 <th>Food Items</th>
                 <th>Delivery Date</th>
                 <th>Delivery Address</th>
+                <th>Pickup Address</th>
                 <th>{user === "admin" ? "Action" : "Acceptance"}</th>
                 <th>Delivered</th>
               </tr>
@@ -156,6 +162,25 @@ const AllAssignments = () => {
                   </td>
                   <td>{assignment.deliveryDate}</td>
                   <td>{assignment.deliveryAddress}</td>
+                  <td>
+                    {assignment.donor?.name ? (
+                      <Button
+                        variant="link"
+                        className="text-capitalize p-0 text-warning"
+                        onClick={toggleDonorDetails}
+                      >
+                        {assignment.donor?.name}
+                      </Button>
+                    ) : (
+                      "-"
+                    )}
+
+                    <ViewDonorDetails
+                      show={showDonor}
+                      toggle={toggleDonorDetails}
+                      donorObj={assignment.donor}
+                    />
+                  </td>
                   <td>
                     {user.user === "ngo" ? (
                       <div className="d-flex justify-content-center gap-3 align-items-center">
@@ -206,7 +231,8 @@ const AllAssignments = () => {
                     )}
                   </td>
                   <td>
-                    {(assignment.acceptance === "pending" || assignment.acceptance === "rejected" ) &&
+                    {(assignment.acceptance === "pending" ||
+                      assignment.acceptance === "rejected") &&
                     !assignment.delivered ? (
                       "-"
                     ) : assignment.delivered ? (
